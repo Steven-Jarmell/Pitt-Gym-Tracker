@@ -51,11 +51,12 @@ def main():
             except IntegrityError as err:
                 print("Item already exists in the DB")
                 print(err)
+                print(f"Tried to add: {gym_entry}")
             except Exception as err:
                 print("Unknown Error Occurred Committing to the DB")
                 print(err)
-            finally:
                 print(f"Tried to add: {gym_entry}")
+            finally:
                 session.rollback()
 
     print("Finished")
