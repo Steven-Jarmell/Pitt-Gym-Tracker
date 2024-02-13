@@ -9,6 +9,7 @@ I want to make this site better, as well as provide historical data and hopefull
 
 ## Technology Used
 - Python + BeautifulSoup => Web Scraping
-- AWS Lambda => Run the scraper at a certain interval
+- AWS Lambda + AWS Event Bridge => Run the scraper at a certain interval
+- AWS ECR + GitHub Actions => CI/CD Pipeline to update Lambda automatically
 - PlanetScale => Serverless SQL Database
 - Next.js => Frontend
