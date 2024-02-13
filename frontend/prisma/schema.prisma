@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model GymData {
+  name        String   @db.VarChar(100)
+  count       Int
+  lastUpdated DateTime @db.DateTime(0)
+  status      Boolean
+
+  @@id([name, count, lastUpdated, status])
+}
