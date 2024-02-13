@@ -6,6 +6,7 @@ from util import get_connection_string, get_page_url
 from bs4 import BeautifulSoup
 import requests
 import logging
+from datetime import datetime
 
 logger = logging.getLogger()
 logger.setLevel("INFO")
@@ -46,7 +47,7 @@ def handler(event, context):
             gym_entry = Gym(
                 name=info[0],
                 count=info[2][12:],
-                time=info[3][9:],
+                lastUpdated=datetime.strptime(info[3][9:], '%m/%d/%Y %H:%M %p'),
                 status=info[1][1:-1] == 'Open'
             )
 
