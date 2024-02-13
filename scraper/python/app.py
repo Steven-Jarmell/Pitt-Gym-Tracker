@@ -9,7 +9,6 @@ import logging
 
 logger = logging.getLogger()
 logger.setLevel("INFO")
-# Test
 
 def handler(event, context):
     logger.info("Starting Lambda")
