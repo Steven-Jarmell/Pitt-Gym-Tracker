@@ -5,12 +5,19 @@ from model import Base, Gym
 from util import get_connection_string, get_page_url
 from bs4 import BeautifulSoup
 import requests
+import logging
+
+logger = logging.getLogger()
+logger.setLevel("INFO")
 
 
 def handler(event, context):
+    logger.info("Starting Lambda")
+
     # Connect to SQL Database
     connection_string = get_connection_string()
     engine = create_engine(connection_string)
+    logger.info("Successfully connected to DB")
 
     # Ensure the table is created
     Base.metadata.create_all(engine)
@@ -24,8 +31,8 @@ def handler(event, context):
     }
 
     page = requests.get(get_page_url(), headers=headers)
-
     soup = BeautifulSoup(page.text, 'html.parser')
+    logger.info("Successfully got page HTML")
 
     gym_info_list = soup.find_all("div", class_="barChart")
 
@@ -49,14 +56,15 @@ def handler(event, context):
             try:
                 session.commit()
             except IntegrityError as err:
-                print("Item already exists in the DB")
-                print(err)
-                print(f"Tried to add: {gym_entry}")
+                logger.exception("Item already exists in the DB")
+                logger.exception(err)
+                logger.exception(f"Tried to add: {gym_entry}")
             except Exception as err:
-                print("Unknown Error Occurred Committing to the DB")
-                print(err)
-                print(f"Tried to add: {gym_entry}")
+                logger.exception("Unknown Error Occurred Committing to the DB")
+                logger.exception(err)
+                logger.exception(f"Tried to add: {gym_entry}")
             finally:
+                logger.info("Rolling back after exception")
                 session.rollback()
 
-    print("Finished")
+    logger.info("Finished")

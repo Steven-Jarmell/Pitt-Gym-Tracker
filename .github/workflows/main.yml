@@ -1,0 +1,66 @@
+name: Deploy Scraper to AWS Lambda
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'scraper/python/**'
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+# Cancel any in-progress job or run
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_DEFAULT_REGION: us-east-2
+      ECR_IMAGE_TAG: latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@master
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_DEFAULT_REGION }}
+        mask-aws-account-id: 'true'
+      
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+      with:
+        mask-password: 'true'
+    
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      working-directory: ./scraper/python
+      env:
+        ECR_REPOSITORY: pitt-lamba-ecr
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      run: |
+        docker build \
+          --build-arg AWS_ACCESS_KEY="${{ secrets.AWS_ACCESS_KEY_ID }}" \
+          --build-arg AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
+          --build-arg AWS_DEFAULT_REGION="${{ env.AWS_DEFAULT_REGION }}" \
+          -t $ECR_REGISTRY/$ECR_REPOSITORY:${{ env.ECR_IMAGE_TAG }} .
+    - name: Deploy to AWS Lambda
+      run: |
+        aws lambda update-function-code \
+        -- function-name ${{ env.AWS_LAMBDA_FUNC_NAME }} \
+        -- image-uri "${{ secrets.AWS_ECR_IMAGE_URI }}:${{ env.ECR_IMAGE_TAG }}"
+      env:
+        AWS_LAMBDA_FUNC_NAME: pitt-gym-scraper
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
