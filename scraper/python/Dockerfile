@@ -2,11 +2,16 @@ FROM public.ecr.aws/lambda/python:3.11
 
 COPY requirements.txt .
 
-RUN pip install -r requirements.txt --target "${LAMBDA_TASK_ROOT}"
+RUN pip install -r requirements.txt --target .
 
 ARG AWS_ACCESS_KEY_ID
 ARG AWS_SECRET_ACCESS_KEY
 ARG AWS_DEFAULT_REGION
+ARG DB_HOST 
+ARG DB_USERNAME 
+ARG DB_PASSWORD 
+ARG DB_NAME 
+ARG CONNECT_2_URL
 
 ENV DB_HOST $DB_HOST
 ENV DB_USERNAME $DB_USERNAME
@@ -17,10 +22,10 @@ ENV AWS_ACCESS_KEY_ID $AWS_ACCESS_KEY_ID
 ENV AWS_SECRET_ACCESS_KEY $AWS_SECRET_ACCESS_KEY
 ENV AWS_DEFAULT_REGION $AWS_DEFAULT_REGION
 
-COPY app.py ${LAMBDA_TASK_ROOT}
+COPY app.py .
 
-COPY model.py ${LAMBDA_TASK_ROOT}
+COPY model.py .
 
-COPY util.py ${LAMBDA_TASK_ROOT}
+COPY util.py .
 
 CMD [ "app.handler" ]

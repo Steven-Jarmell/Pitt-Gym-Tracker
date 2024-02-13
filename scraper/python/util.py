@@ -7,7 +7,7 @@ load_dotenv()
 def get_connection_string() -> str:
     (host_name, username, password, db_name) = get_db_env_variables()
 
-    return f'mysql+mysqlconnector://{username}:{password}@{host_name}:3306/{db_name}'
+    return f'mysql+mysqlconnector://{username}:{password}@{host_name}/{db_name}'
 
 
 def get_db_env_variables() -> tuple[str, str, str, str]:
