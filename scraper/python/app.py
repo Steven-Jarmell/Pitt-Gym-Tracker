@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 import requests
 
 
-def main():
+def handler(event, context):
     # Connect to SQL Database
     connection_string = get_connection_string()
     engine = create_engine(connection_string)
@@ -60,7 +60,3 @@ def main():
                 session.rollback()
 
     print("Finished")
-
-
-if __name__ == "__main__":
-    main()
