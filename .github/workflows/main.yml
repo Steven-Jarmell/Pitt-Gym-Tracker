@@ -53,6 +53,11 @@ jobs:
           --build-arg AWS_ACCESS_KEY="${{ secrets.AWS_ACCESS_KEY_ID }}" \
           --build-arg AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
           --build-arg AWS_DEFAULT_REGION="${{ env.AWS_DEFAULT_REGION }}" \
+          --build-arg CONNECT_2_URL="${{ secrets.CONNECT_2_URL }}" \
+          --build-arg DB_USERNAME="${{ secrets.DB_USERNAME }}" \
+          --build-arg DB_HOST="${{ secrets.DB_HOST }}" \
+          --build-arg DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
+          --build-arg DB_NAME="${{ secrets.DB_NAME }}" \
           -t $ECR_REGISTRY/$ECR_REPOSITORY:${{ env.ECR_IMAGE_TAG }} .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:${{ env.ECR_IMAGE_TAG }}
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:${{ env.ECR_IMAGE_TAG }}"
