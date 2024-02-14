@@ -51,6 +51,8 @@ def handler(event, context):
                 status=info[1][1:-1] == 'Open'
             )
 
+            logger.info(f"Trying to add:v{gym_entry}")
+
             session.add(gym_entry)
 
             try:
