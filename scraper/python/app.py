@@ -59,14 +59,16 @@ def handler(event, context):
                 session.commit()
             except IntegrityError as err:
                 logger.exception("Item already exists in the DB")
-                logger.exception(err)
-                logger.exception(f"Tried to add: {gym_entry}")
+                log_add_exception(err, gym_entry)
+                session.rollback()
             except Exception as err:
                 logger.exception("Unknown Error Occurred Committing to the DB")
-                logger.exception(err)
-                logger.exception(f"Tried to add: {gym_entry}")
-            finally:
-                logger.info("Rolling back after exception")
+                log_add_exception(err, gym_entry)
                 session.rollback()
 
     logger.info("Finished")
+
+def log_add_exception(err, gym_entry):
+    logger.exception(err)
+    logger.exception(f"Tried to add: {gym_entry}")
+    logger.info("Rolling back after exception")

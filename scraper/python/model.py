@@ -15,4 +15,4 @@ class Gym(Base):
     status: Mapped[bool] = mapped_column(Boolean, primary_key=True)
 
     def __str__(self):
-        return f"{{\n\tName: {self.name}\n\tCount: {self.count}\n\tTime: {self.lastUpdated}\n\tStatus: {self.status}\n}}"
+        return f"{{\n\tName: {self.name}\n\tCount: {self.count}\n\LastUpdated: {self.lastUpdated}\n\tStatus: {self.status}\n}}"
