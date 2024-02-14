@@ -5,6 +5,7 @@ on:
       - 'main'
     paths:
       - 'scraper/python/**'
+  workflow-dispatch:
 
 permissions:
   id-token: write
