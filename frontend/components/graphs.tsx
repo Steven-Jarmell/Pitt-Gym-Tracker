@@ -3,6 +3,8 @@
 import prisma from "@/lib/prisma";
 import GymInfo from "./GymInfo";
 
+export const revalidate = 3600 // revalidate at most every hour
+
 async function getData() {
     try {
         const data = await prisma.gymData.findMany({})
