@@ -47,7 +47,7 @@ def handler(event, context):
             gym_entry = Gym(
                 name=info[0],
                 count=info[2][12:],
-                lastUpdated=datetime.strptime(info[3][9:], '%m/%d/%Y %H:%M %p'),
+                lastUpdated=datetime.strptime(info[3][9:], '%m/%d/%Y %I:%M %p'),
                 status=info[1][1:-1] == 'Open'
             )
 
