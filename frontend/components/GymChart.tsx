@@ -6,6 +6,8 @@ import {
     CartesianGrid,
     Tooltip,
     ResponsiveContainer,
+    TooltipProps,
+    Text,
 } from "recharts";
 
 export type GymInfo = {
@@ -25,11 +27,22 @@ export const convertUnixToTime = (unixTimestamp: number) => {
     return `${hours}:${minutes}`;
 };
 
+const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
+    if (active && payload && payload.length) {
+        return (
+            <div className="custom-tooltip bg-slate-400 p-2 font-serif rounded-md">
+                <p className="label">{`${payload?.[0].name} : ${convertUnixToTime(payload![0].value as number)}`}</p>
+                <p className="label">{`${payload?.[1].name} : ${payload?.[1].value}`}</p>
+            </div>
+        );
+    }
+
+    return null;
+};
+
 const GymChart = ({ GymName, GymInfo }: GymChartType) => {
-    console.log("------------------------")
-    console.log("Gym Name " + GymName)
     const startOfDay = 6 * 60 * 60; // 6 AM in seconds
-    const endOfDay = 24 * 60 * 60; // 11 PM in seconds
+    const endOfDay = 23 * 60 * 60; // 11 PM in seconds
 
     // Generate ticks for every hour from 6 AM to 11 PM
     const ticks = [];
@@ -37,16 +50,14 @@ const GymChart = ({ GymName, GymInfo }: GymChartType) => {
         ticks.push(hour * 60 * 60); // Convert hour to seconds
     }
 
-    console.log(GymInfo)
-
     return (
-        <ResponsiveContainer width={1000} height={400}>
+        <ResponsiveContainer width={"100%"} height={400}>
             <ScatterChart
                 margin={{
-                    top: 20,
-                    right: 20,
-                    bottom: 20,
-                    left: 20,
+                    top: 40,
+                    right: 40,
+                    bottom: 40,
+                    left: 40,
                 }}
             >
                 <CartesianGrid />
@@ -54,16 +65,33 @@ const GymChart = ({ GymName, GymInfo }: GymChartType) => {
                     type="number"
                     dataKey="time"
                     name="Time"
+                    tickCount={20}
                     interval={1}
                     domain={["auto", "auto"]}
                     ticks={ticks}
                     tickFormatter={(value) => {
                         return convertUnixToTime(value);
                     }}
+                    angle={-35}
+                    tick={{ dy: 10 }}
+                    label={{
+                        value: "Time",
+                        position: "insideBottom",
+                        offset: -30,
+                    }}
                 />
-                <YAxis type="number" dataKey="count" name="Count" />
-                <Tooltip cursor={{ strokeDasharray: "3 3" }} />
-                <Scatter name="A school" data={GymInfo} fill="#8884d8" />
+                <YAxis
+                    type="number"
+                    dataKey="count"
+                    name="Count"
+                    label={{
+                        value: "Count",
+                        angle: -90,
+                        position: "insideLeft",
+                    }}
+                />
+                <Tooltip content={<CustomTooltip />} />
+                <Scatter name={`${GymName}`} data={GymInfo} fill="#8884d8" />
             </ScatterChart>
         </ResponsiveContainer>
     );
