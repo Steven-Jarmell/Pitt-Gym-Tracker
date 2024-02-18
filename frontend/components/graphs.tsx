@@ -1,8 +1,7 @@
-import prisma from "@/lib/prisma";
 import GymChart, { GymInfo } from "./GymChart";
 
 async function getData() {
-    return await fetch("http://localhost:3000/api/gymdata", {
+    return await fetch(process.env.BACKEND_URL || "http://localhost:3000/" + "api/gymdata", {
         method: "GET",
         next: { revalidate: 3600 },
     }).then((response) => {
@@ -45,18 +44,6 @@ const Graphs = async () => {
             {Array.from(groupedData).map(([name, datesCounts]) => (
                 <div key={name}>
                     <h1 className="text-xl">{name}</h1>
-                    <ul>
-                        {datesCounts.map(([date, count], index) => {
-                            return <li key={index}>
-                                Date:{" "}
-                                {date.slice(0, -4) +
-                                    " | " +
-                                    (Number.parseInt(date.split('T')[1].slice(0,3)) * 60 * 60 +
-                                    Number.parseInt(date.split('T')[1].slice(3,5)) * 60)}
-                                , Count: {count}
-                            </li>
-})}
-                    </ul>
                     <GymChart
                         GymName={name}
                         GymInfo={
