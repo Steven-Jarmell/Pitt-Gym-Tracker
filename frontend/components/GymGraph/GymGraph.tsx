@@ -1,4 +1,4 @@
-import { convertISOToUnix, convertISOtoUnix, convertUnixToTime } from "@/util/conversion";
+import { convertISOToUnix, convertUnixToTime } from "@/util/conversion";
 import GymGraphTooltip from "./GymGraphTooltip";
 import { getOneGymData } from "@/util/api";
 
