@@ -34,7 +34,7 @@ const GymGraph = async ({ gymName }: GymGraphType) => {
 
     return (
         <>
-            <h3 className="text-center">{gymName}</h3>
+            <h2 className="text-center pb-0">{gymName}</h2>
             <ResponsiveContainer width={"100%"} height={400}>
                 <ScatterChart
                     margin={{
