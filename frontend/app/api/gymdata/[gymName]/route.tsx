@@ -11,7 +11,7 @@ export async function GET(request: Request, { params }: { params: { gymName: str
                 lastUpdated: true,
             },
             orderBy: {
-                'lastUpdated': 'desc'
+                lastUpdated: 'desc'
             }
         });
         return Response.json(data, { status: 200 });

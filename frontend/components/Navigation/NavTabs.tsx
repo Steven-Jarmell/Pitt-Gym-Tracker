@@ -172,36 +172,14 @@ export default function NavTabs() {
 
     return (
         <>
-            <header
-                className="pointer-events-none relative z-50 flex flex-none flex-col"
-                
-            >
+            <header className="pointer-events-none relative z-50 flex flex-none flex-col">
                 {isHomePage && (
                     <>
-                        <Container
-                            className="top-0 order-last -mb-3 pt-3"
-                            style={{
-                                position:
-                                    "var(--header-position)" as React.CSSProperties["position"],
-                            }}
-                        ></Container>
+                        <Container className="top-0 order-last -mb-3 pt-3"></Container>
                     </>
                 )}
-                <div
-                    ref={headerRef}
-                    className="top-0 z-10 h-16 pt-6"
-                    style={{
-                        position:
-                            "var(--header-position)" as React.CSSProperties["position"],
-                    }}
-                >
-                    <Container
-                        className="top-[var(--header-top,theme(spacing.6))] w-full"
-                        style={{
-                            position:
-                                "var(--header-inner-position)" as React.CSSProperties["position"],
-                        }}
-                    >
+                <div ref={headerRef} className="top-0 z-10 h-16 pt-6">
+                    <Container className="w-full">
                         <div className="relative flex gap-4">
                             <div className="flex flex-1 justify-end md:justify-center">
                                 <MobileNavigation className="pointer-events-auto md:hidden" />
@@ -211,12 +189,7 @@ export default function NavTabs() {
                     </Container>
                 </div>
             </header>
-            {isHomePage && (
-                <div
-                    className="flex-none"
-                    style={{ height: "var(--content-offset)" }}
-                />
-            )}
+            {isHomePage && <div className="flex-none" />}
         </>
     );
 }
