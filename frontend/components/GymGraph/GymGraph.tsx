@@ -1,4 +1,4 @@
-import { convertUTCToUnix, convertUnixToTime } from "@/util/conversion";
+import { convertISOToUnix, convertISOtoUnix, convertUnixToTime } from "@/util/conversion";
 import GymGraphTooltip from "./GymGraphTooltip";
 import { getOneGymData } from "@/util/api";
 
@@ -37,13 +37,19 @@ const GymGraph = ({ gymName }: GymGraphType) => {
     useEffect(() => {
         getOneGymData(gymName)
             .then((res) =>
-                res.map((item) => {
-                    let timeInUnix = convertUTCToUnix(item.lastUpdated);
+                res
+                .filter(item => {
+                    // Probs need a switch statement here to use the time range
+                    let todaysDate = new Date().toISOString().split('T')[0]
+                    return selectedTimeRange === TimeOptions.ONE_DAY ? item.lastUpdated.split('T')[0] === todaysDate : true
+                })
+                .map((item) => {
+                    let timeInUnix = convertISOToUnix(item.lastUpdated);
                     return { count: item.count, time: timeInUnix };
                 })
             )
             .then((data) => setGymInfo(data));
-    }, []);
+    }, [selectedTimeRange]);
 
     // Generate ticks for every hour from 6 AM to 11 PM
     const ticks = [];

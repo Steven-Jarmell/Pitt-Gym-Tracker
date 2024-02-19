@@ -5,7 +5,7 @@ export const convertUnixToTime = (unixTimestamp: number) => {
     return `${hours}:${minutes}`;
 };
 
-export const convertUTCToUnix = (utcTime: string) => {
+export const convertISOToUnix = (utcTime: string) => {
     return (
         Number.parseInt(utcTime.split("T")[1].slice(0, 3)) * 3600 +
         Number.parseInt(utcTime.split("T")[1].slice(3, 5)) * 60
