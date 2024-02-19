@@ -13,3 +13,4 @@ I want to make this site better, as well as provide historical data and hopefull
 - Docker + AWS ECR + GitHub Actions => CI/CD Pipeline to update Lambda automatically
 - PlanetScale => Serverless SQL Database
 - Next.js => Frontend
+- TailwindUI => Frontend Components (shoutout Ming)

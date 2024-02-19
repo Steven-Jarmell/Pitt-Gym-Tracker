@@ -12,19 +12,38 @@ import {
     ResponsiveContainer,
 } from "recharts";
 import TimeButtonGroup from "./TimeButtonGroup";
+import { useEffect, useState } from "react";
+import { GymInfo } from "../GymChart";
 
 type GymGraphType = {
     gymName: string;
 };
 
-const GymGraph = async ({ gymName }: GymGraphType) => {
-    let gymInfo = await getOneGymData(gymName).then((data) =>
-        data.map((item) => {
-            let timeInUnix = convertUTCToUnix(item.lastUpdated);
+export enum TimeOptions {
+    ONE_DAY = "1D",
+    ONE_WEEK = "1W",
+    ONE_MONTH = "1M",
+    ONE_YEAR = "1Y",
+    YTD = "YTD",
+    ALL = "ALL",
+}
 
-            return { count: item.count, time: timeInUnix };
-        })
+const GymGraph = ({ gymName }: GymGraphType) => {
+    const [selectedTimeRange, setSelectedTimeRange] = useState(
+        TimeOptions.ONE_DAY
     );
+    const [gymInfo, setGymInfo] = useState<GymInfo[]>([]);
+
+    useEffect(() => {
+        getOneGymData(gymName)
+            .then((res) =>
+                res.map((item) => {
+                    let timeInUnix = convertUTCToUnix(item.lastUpdated);
+                    return { count: item.count, time: timeInUnix };
+                })
+            )
+            .then((data) => setGymInfo(data));
+    }, []);
 
     // Generate ticks for every hour from 6 AM to 11 PM
     const ticks = [];
@@ -82,7 +101,10 @@ const GymGraph = async ({ gymName }: GymGraphType) => {
                     />
                 </ScatterChart>
             </ResponsiveContainer>
-            <TimeButtonGroup />
+            <TimeButtonGroup
+                selectedTimeRange={selectedTimeRange}
+                setSelectedTimeRange={setSelectedTimeRange}
+            />
         </>
     );
 };
