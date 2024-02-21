@@ -7,3 +7,7 @@
     text-wrap: balance;
   }
 }
+
+:root {
+    --primary-text-color: #62B0E8;
+}

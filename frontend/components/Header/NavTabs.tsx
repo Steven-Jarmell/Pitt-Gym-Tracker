@@ -133,8 +133,8 @@ function NavItem({
         className={clsx(
           "relative block px-3 py-2 transition",
           isActive
-            ? "text-teal-500 dark:text-teal-400"
-            : "hover:text-teal-500 dark:hover:text-teal-400"
+            ? "text-[var(--primary-text-color)]"
+            : "hover:text-[var(--primary-text-color)]"
         )}
       >
         {children}
@@ -173,7 +173,7 @@ export default function NavTabs() {
             <Container className="top-0 order-last -mb-3 pt-3"></Container>
           </>
         )}
-        <div ref={headerRef} className="top-0 z-10 h-16 pt-6">
+        <div ref={headerRef} className="top-0 z-10 h-16 flex items-center">
           <Container className="w-full">
             <div className="relative flex gap-4">
               <div className="flex flex-1 justify-end md:justify-center">

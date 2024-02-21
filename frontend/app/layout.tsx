@@ -1,7 +1,8 @@
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import NavTabs from "@/components/Navigation/NavTabs"
+import { Providers } from "./providers"
+import Header from "@/components/Header/Header"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -18,13 +19,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full antialiased" suppressHydrationWarning>
-      <body className="flex flex-col bg-zinc-50">
-        <NavTabs />
-        <main
-          className={`${inter.className} flex flex-col items-center gap-2 md:p-12 sm:p-0`}
-        >
-          {children}
-        </main>
+      <body className="flex flex-col bg-[#F0F4F8] dark:bg-[#040D12]">
+        <Providers>
+          <Header />
+          <main
+            className={`${inter.className} flex flex-col items-center gap-2 md:p-12 sm:p-0`}
+          >
+            {children}
+          </main>
+        </Providers>
       </body>
     </html>
   )
