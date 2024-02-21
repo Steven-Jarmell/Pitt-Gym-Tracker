@@ -38,15 +38,43 @@ const GymGraph = ({ gymName }: GymGraphType) => {
         getOneGymData(gymName)
             .then((res) =>
                 res
-                .filter(item => {
-                    // Probs need a switch statement here to use the time range
-                    let todaysDate = new Date().toISOString().split('T')[0]
-                    return selectedTimeRange === TimeOptions.ONE_DAY ? item.lastUpdated.split('T')[0] === todaysDate : true
-                })
-                .map((item) => {
-                    let timeInUnix = convertISOToUnix(item.lastUpdated);
-                    return { count: item.count, time: timeInUnix };
-                })
+                    .filter((item) => {
+                        // Probs need a switch statement here to use the time range
+                        let todaysDate = new Date().toISOString().split("T")[0];
+                        let curItemDate = item.lastUpdated.split("T")[0];
+                        switch (selectedTimeRange) {
+                            case TimeOptions.ONE_DAY:
+                                return todaysDate === curItemDate;
+                            case TimeOptions.ONE_WEEK:
+                                let oneWeekAgo = new Date();
+                                oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+                                return new Date(curItemDate) >= oneWeekAgo;
+                            case TimeOptions.ONE_MONTH:
+                                let oneMonthAgo = new Date();
+                                oneMonthAgo.setMonth(
+                                    oneMonthAgo.getMonth() - 1
+                                );
+                                return new Date(curItemDate) >= oneMonthAgo;
+                            case TimeOptions.ONE_YEAR:
+                                let oneYearAgo = new Date();
+                                oneYearAgo.setFullYear(
+                                    oneYearAgo.getFullYear() - 1
+                                );
+                                return new Date(curItemDate) >= oneYearAgo;
+                            case TimeOptions.YTD:
+                                console.log(todaysDate.slice(0, 4));
+                                return (
+                                    todaysDate.slice(0, 4) ===
+                                    curItemDate.slice(0, 4)
+                                );
+                            case TimeOptions.ALL:
+                                return true;
+                        }
+                    })
+                    .map((item) => {
+                        let timeInUnix = convertISOToUnix(item.lastUpdated);
+                        return { count: item.count, time: timeInUnix };
+                    })
             )
             .then((data) => setGymInfo(data));
     }, [selectedTimeRange]);
