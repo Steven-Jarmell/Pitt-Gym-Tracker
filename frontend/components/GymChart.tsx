@@ -66,7 +66,7 @@ const GymChart = ({ GymName, GymInfo }: GymChartType) => {
                     dataKey="time"
                     name="Time"
                     tickCount={20}
-                    interval={1}
+                    interval={2}
                     domain={["auto", "auto"]}
                     ticks={ticks}
                     tickFormatter={(value) => {
