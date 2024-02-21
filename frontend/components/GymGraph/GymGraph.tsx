@@ -13,12 +13,42 @@ import {
   ZAxis,
 } from "recharts"
 import TimeButtonGroup from "./TimeButtonGroup"
-import { useEffect, useState } from "react"
-import { GymGraphInfoType, filterByDate, graphInfoReducer } from "@/util/graph-util"
+import { useCallback, useEffect, useState } from "react"
+import {
+  GymGraphInfoType,
+  filterByDate,
+  graphInfoReducer,
+} from "@/util/graph-util"
 import { getOneGymData } from "@/util/api"
 
 type GymGraphType = {
   gymName: string
+}
+
+const useMediaQuery = (width: number) => {
+  const [targetReached, setTargetReached] = useState(false)
+
+  const updateTarget = useCallback((e: { matches: any }) => {
+    if (e.matches) {
+      setTargetReached(true)
+    } else {
+      setTargetReached(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    const media = window.matchMedia(`(max-width: ${width}px)`)
+    media.addListener(updateTarget)
+
+    // Check on mount (callback is not called until a change occurs)
+    if (media.matches) {
+      setTargetReached(true)
+    }
+
+    return () => media.removeListener(updateTarget)
+  }, [])
+
+  return targetReached
 }
 
 export enum TimeOptions {
@@ -49,6 +79,8 @@ const GymGraph = ({ gymName }: GymGraphType) => {
   const [selectedTimeRange, setSelectedTimeRange] = useState(
     TimeOptions.ONE_DAY
   )
+
+  const isScreenSmall = useMediaQuery(640)
 
   const showLines =
     selectedTimeRange === TimeOptions.ONE_DAY ||
@@ -105,7 +137,7 @@ const GymGraph = ({ gymName }: GymGraphType) => {
             dataKey="time"
             name="Time"
             tickCount={20}
-            interval={1}
+            interval={isScreenSmall ? 2 : 1}
             domain={["auto", "auto"]}
             ticks={ticks}
             tickFormatter={(value) => {
