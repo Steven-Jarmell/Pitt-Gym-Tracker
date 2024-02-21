@@ -16,8 +16,8 @@ export default function Gym({params} : {params: {gym: string}}) {
 
     })
     return (
-        <div>
+        <>
             {gymNames.map((name, i) => <GymGraph key={i} gymName={name} />)}
-        </div>
+        </>
     );
 }
