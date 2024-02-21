@@ -1,7 +1,7 @@
-import { getAllGymNames } from "@/util/api";
-import GymChart, { GymInfo } from "./GymChart";
-import TimeButtonGroup from "./GymGraph/TimeButtonGroup";
-import GymGraph from "./GymGraph/GymGraph";
+import { getAllGymNames } from "@/util/api"
+import GymChart, { GymInfo } from "./GymChart"
+import TimeButtonGroup from "./GymGraph/TimeButtonGroup"
+import GymGraph from "./GymGraph/GymGraph"
 
 // const gymDataReducer = (
 //     acc: Map<string, [string, number][]>,
@@ -16,18 +16,20 @@ import GymGraph from "./GymGraph/GymGraph";
 // };
 
 const Graphs = async () => {
-    const data = await getAllGymNames();
+  const data = await getAllGymNames()
 
-    // const groupedData = data.reduce(
-    //     gymDataReducer,
-    //     new Map<string, [string, number][]>()
-    // );
+  // const groupedData = data.reduce(
+  //     gymDataReducer,
+  //     new Map<string, [string, number][]>()
+  // );
 
-    return (
-        <div className="w-[80vw]">
-            {data.map((name, i) => <GymGraph key={i} gymName={name.name} />)}
-        </div>
-    );
-};
+  return (
+    <div className="w-[80vw]">
+      {data.map((name, i) => (
+        <GymGraph key={i} gymName={name.name} />
+      ))}
+    </div>
+  )
+}
 
-export default Graphs;
+export default Graphs
