@@ -10,6 +10,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
+  ZAxis,
 } from "recharts"
 import TimeButtonGroup from "./TimeButtonGroup"
 import { useEffect, useState } from "react"
@@ -128,6 +129,7 @@ const GymGraph = ({ gymName }: GymGraphType) => {
               position: "insideLeft",
             }}
           />
+          <ZAxis range={[30, 31]} />
           {showLines && <Legend verticalAlign="top" />}
           <Tooltip content={<GymGraphTooltip />} />
           {Array.from(gymInfo).map(([date, timeCounts], i) => {
