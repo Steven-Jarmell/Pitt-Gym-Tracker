@@ -19,7 +19,7 @@ export default function RootLayout({
         <html lang="en" className="h-full antialiased" suppressHydrationWarning>
             <body className="flex flex-col bg-zinc-50">
                 <NavTabs />
-                <main className="flex flex-col items-center gap-2 p-12">
+                <main className="flex flex-col items-center gap-2 md:p-12 sm:p-0">
                     {children}
                 </main>
             </body>
