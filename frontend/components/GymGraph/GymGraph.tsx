@@ -1,6 +1,5 @@
 import { convertISOToUnix, convertUnixToTime } from "@/util/conversion"
 import GymGraphTooltip from "./GymGraphTooltip"
-import { getOneGymData } from "@/util/api"
 
 import {
   ScatterChart,
@@ -10,14 +9,12 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  Legend,
 } from "recharts"
 import TimeButtonGroup from "./TimeButtonGroup"
 import { useEffect, useState } from "react"
-
-type GymInfo = {
-  time: number
-  count: number
-}
+import { GymGraphInfoType, filterByDate, graphInfoReducer } from "@/util/graph-util"
+import { getOneGymData } from "@/util/api"
 
 type GymGraphType = {
   gymName: string
@@ -32,46 +29,51 @@ export enum TimeOptions {
   ALL = "ALL",
 }
 
+const lineColorOptions = [
+  "#62B0E8",
+  "#DA127D",
+  "#8662C7",
+  "#DE911D",
+  "#F9DA8B",
+  "#5FE3C0",
+  "#E66A6A",
+  "#7C5E10",
+  "#044E54",
+  "#222222",
+  "#FFF3C4",
+  "#BEF8FD",
+]
+
 const GymGraph = ({ gymName }: GymGraphType) => {
   const [selectedTimeRange, setSelectedTimeRange] = useState(
     TimeOptions.ONE_DAY
   )
-  const [gymInfo, setGymInfo] = useState<GymInfo[]>([])
+
+  const showLines =
+    selectedTimeRange === TimeOptions.ONE_DAY ||
+    selectedTimeRange === TimeOptions.ONE_WEEK
+
+  const [gymInfo, setGymInfo] = useState<
+    Map<string, { time: number; count: number }[]>
+  >(new Map())
 
   useEffect(() => {
     getOneGymData(gymName)
       .then((res) =>
         res
-          .filter((item) => {
-            // Probs need a switch statement here to use the time range
-            let todaysDate = new Date().toISOString().split("T")[0]
-            let curItemDate = item.lastUpdated.split("T")[0]
-            switch (selectedTimeRange) {
-              case TimeOptions.ONE_DAY:
-                return todaysDate === curItemDate
-              case TimeOptions.ONE_WEEK:
-                let oneWeekAgo = new Date()
-                oneWeekAgo.setDate(oneWeekAgo.getDate() - 7)
-                return new Date(curItemDate) >= oneWeekAgo
-              case TimeOptions.ONE_MONTH:
-                let oneMonthAgo = new Date()
-                oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1)
-                return new Date(curItemDate) >= oneMonthAgo
-              case TimeOptions.ONE_YEAR:
-                let oneYearAgo = new Date()
-                oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1)
-                return new Date(curItemDate) >= oneYearAgo
-              case TimeOptions.YTD:
-                console.log(todaysDate.slice(0, 4))
-                return todaysDate.slice(0, 4) === curItemDate.slice(0, 4)
-              case TimeOptions.ALL:
-                return true
-            }
-          })
+          .filter((item) => filterByDate(item, selectedTimeRange))
           .map((item) => {
             let timeInUnix = convertISOToUnix(item.lastUpdated)
-            return { count: item.count, time: timeInUnix }
+            return {
+              count: item.count,
+              time: timeInUnix,
+              date: item.lastUpdated.split("T")[0],
+            } as GymGraphInfoType
           })
+          .reduce(
+            graphInfoReducer,
+            new Map<string, { time: number; count: number }[]>()
+          )
       )
       .then((data) => setGymInfo(data))
   }, [selectedTimeRange])
@@ -84,7 +86,7 @@ const GymGraph = ({ gymName }: GymGraphType) => {
 
   return (
     <div className="flex flex-col items-center w-full max-w-5xl">
-      <h2 className="text-lg font-semibold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight text-center">
+      <h2 className="text-lg font-semibold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight text-center dark:text-slate-50">
         {gymName}
       </h2>
       <ResponsiveContainer width={"100%"} height={400}>
@@ -126,8 +128,19 @@ const GymGraph = ({ gymName }: GymGraphType) => {
               position: "insideLeft",
             }}
           />
+          {showLines && <Legend verticalAlign="top" />}
           <Tooltip content={<GymGraphTooltip />} />
-          <Scatter name={`${gymName}`} data={gymInfo} fill="#8884d8" />
+          {Array.from(gymInfo).map(([date, timeCounts], i) => {
+            return (
+              <Scatter
+                key={i}
+                name={date}
+                data={timeCounts}
+                fill={`${showLines ? lineColorOptions[i] : "#62B0E8"}`}
+                line={showLines}
+              />
+            )
+          })}
         </ScatterChart>
       </ResponsiveContainer>
       <TimeButtonGroup
