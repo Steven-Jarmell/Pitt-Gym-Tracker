@@ -1,9 +1,7 @@
-"use client";
+"use client"
 
-import GymGraph from "@/components/GymGraph/GymGraph";
+import GymGraph from "@/components/GymGraph/GymGraph"
 
 export default function Home() {
-    return (
-        <GymGraph gymName="Baierl Rec Center"/>
-    );
+  return <GymGraph gymName="Baierl Rec Center" />
 }
