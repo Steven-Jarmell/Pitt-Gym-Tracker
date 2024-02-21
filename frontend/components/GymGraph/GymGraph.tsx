@@ -13,7 +13,11 @@ import {
 } from "recharts"
 import TimeButtonGroup from "./TimeButtonGroup"
 import { useEffect, useState } from "react"
-import { GymInfo } from "../GymChart"
+
+type GymInfo = {
+  time: number
+  count: number
+}
 
 type GymGraphType = {
   gymName: string
