@@ -121,17 +121,17 @@ const GymGraph = ({ gymName }: GymGraphType) => {
   }
 
   return (
-    <div className="flex flex-col items-center w-full max-w-5xl">
-      <h2 className="text-lg font-semibold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight text-center dark:text-slate-50">
+    <div className="flex flex-col items-center w-full max-w-5xl mt-4">
+      <h2 className="text-lg font-semibold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight text-center dark:text-slate-50 sm:my-auto">
         {gymName}
       </h2>
-      <ResponsiveContainer width={"100%"} height={400}>
+      <ResponsiveContainer width={"100%"} height={550}>
         <ScatterChart
           margin={{
-            top: 40,
-            right: 40,
+            top: 10,
+            right: 30,
             bottom: 40,
-            left: 40,
+            left: 15,
           }}
         >
           <CartesianGrid
@@ -169,7 +169,14 @@ const GymGraph = ({ gymName }: GymGraphType) => {
             }}
           />
           <ZAxis range={[30, 31]} />
-          {showLines && <Legend verticalAlign="top" />}
+          {showLines && (
+            <Legend
+              verticalAlign="top"
+              wrapperStyle={{
+                paddingBottom: "12px",
+              }}
+            />
+          )}
           <Tooltip content={<GymGraphTooltip />} />
           {Array.from(gymInfo).map(([date, timeCounts], i) => {
             return (
