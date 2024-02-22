@@ -133,8 +133,8 @@ function NavItem({
         className={clsx(
           "relative block px-3 py-2 transition",
           isActive
-            ? "text-[var(--primary-text-color)]"
-            : "hover:text-[var(--primary-text-color)]"
+            ? "text-[var(--primary-text-color)] font-semibold"
+            : "dark:text-white dark:font-medium hover:text-[var(--primary-text-color)] dark:hover:text-[var(--primary-text-color)]"
         )}
       >
         {children}
@@ -149,7 +149,7 @@ function NavItem({
 function DesktopNavigation(props: React.ComponentPropsWithoutRef<"nav">) {
   return (
     <nav {...props}>
-      <ul className="flex rounded-md bg-white/90 px-3 text-sm font-medium text-zinc-800 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur">
+      <ul className="flex rounded-md bg-white/90 px-3 text-sm font-medium text-zinc-800 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur dark:bg-[var(--dark-secondary-bg-color)] dark:ring-[var(--dark-outline-color)] dark:hover:ring-[var(--dark-hover-outline-color)]">
         <NavItem href="/">Baierl</NavItem>
         <NavItem href="/Trees_Hall">Trees Hall</NavItem>
         <NavItem href="/Bellefield_Hall">Bellefield Hall</NavItem>
