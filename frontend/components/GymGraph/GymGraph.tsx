@@ -20,6 +20,7 @@ import {
   graphInfoReducer,
 } from "@/util/graph-util"
 import { getOneGymData } from "@/util/api"
+import { useTheme } from "next-themes"
 
 type GymGraphType = {
   gymName: string
@@ -80,6 +81,8 @@ const GymGraph = ({ gymName }: GymGraphType) => {
     TimeOptions.ONE_DAY
   )
 
+  let { resolvedTheme } = useTheme()
+
   const isScreenSmall = useMediaQuery(640)
 
   const showLines =
@@ -131,7 +134,11 @@ const GymGraph = ({ gymName }: GymGraphType) => {
             left: 40,
           }}
         >
-          <CartesianGrid />
+          <CartesianGrid
+            fill={
+              resolvedTheme === "dark" ? "var(--dark-secondary-bg-color)" : ""
+            }
+          />
           <XAxis
             type="number"
             dataKey="time"

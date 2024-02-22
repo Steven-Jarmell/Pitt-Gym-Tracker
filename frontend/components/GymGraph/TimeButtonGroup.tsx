@@ -6,60 +6,46 @@ type TimeButtonGroupProps = {
   setSelectedTimeRange: Dispatch<SetStateAction<TimeOptions>>
 }
 
+type TimeButtonProps = {
+  selectedTimeRange: TimeOptions
+  setSelectedTimeRange: Dispatch<SetStateAction<TimeOptions>>
+  timeOption: TimeOptions
+  position: number
+}
+
+const TimeButton = ({
+  selectedTimeRange,
+  setSelectedTimeRange,
+  timeOption,
+  position,
+}: TimeButtonProps) => {
+  return (
+    <button
+      type="button"
+      onClick={() => setSelectedTimeRange(timeOption)}
+      disabled={selectedTimeRange === timeOption}
+      className={`${selectedTimeRange === timeOption ? "text-[var(--primary-text-color)]" : "hover:text-[var(--primary-text-color)]"} ${position === 0 && "rounded-l-md"} ${position === Object.keys(TimeOptions).length - 1 && "rounded-r-md"} relative inline-flex items-center bg-white px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10 dark:bg-[var(--dark-secondary-bg-color)] dark:ring-[var(--dark-outline-color)] dark:hover:ring-[var(--dark-hover-outline-color)]`}
+    >
+      {timeOption}
+    </button>
+  )
+}
+
 const TimeButtonGroup = ({
   selectedTimeRange,
   setSelectedTimeRange,
 }: TimeButtonGroupProps) => {
   return (
     <div className="mt-4">
-      <button
-        type="button"
-        onClick={() => setSelectedTimeRange(TimeOptions.ONE_DAY)}
-        disabled={selectedTimeRange === TimeOptions.ONE_DAY}
-        className={`${selectedTimeRange === TimeOptions.ONE_DAY ? "text-[var(--primary-text-color)]" : "hover:text-[var(--primary-text-color)]"} relative inline-flex items-center rounded-l-md bg-white px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10`}
-      >
-        1D
-      </button>
-      <button
-        type="button"
-        onClick={() => setSelectedTimeRange(TimeOptions.ONE_WEEK)}
-        disabled={selectedTimeRange === TimeOptions.ONE_WEEK}
-        className={`${selectedTimeRange === TimeOptions.ONE_WEEK ? "text-[var(--primary-text-color)]" : "hover:text-[var(--primary-text-color)]"} relative -ml-px inline-flex items-center bg-white px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10`}
-      >
-        1W
-      </button>
-      <button
-        type="button"
-        onClick={() => setSelectedTimeRange(TimeOptions.ONE_MONTH)}
-        disabled={selectedTimeRange === TimeOptions.ONE_MONTH}
-        className={`${selectedTimeRange === TimeOptions.ONE_MONTH ? "text-[var(--primary-text-color)]" : "hover:text-[var(--primary-text-color)]"} relative -ml-px inline-flex items-center bg-white px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10`}
-      >
-        1M
-      </button>
-      <button
-        type="button"
-        onClick={() => setSelectedTimeRange(TimeOptions.YTD)}
-        disabled={selectedTimeRange === TimeOptions.YTD}
-        className={`${selectedTimeRange === TimeOptions.YTD ? "text-[var(--primary-text-color)]" : "hover:text-[var(--primary-text-color)]"} relative -ml-px inline-flex items-center bg-white px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10`}
-      >
-        YTD
-      </button>
-      <button
-        type="button"
-        onClick={() => setSelectedTimeRange(TimeOptions.ONE_YEAR)}
-        disabled={selectedTimeRange === TimeOptions.ONE_YEAR}
-        className={`${selectedTimeRange === TimeOptions.ONE_YEAR ? "text-[var(--primary-text-color)]" : "hover:text-[var(--primary-text-color)]"} relative -ml-px inline-flex items-center bg-white px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10`}
-      >
-        1Y
-      </button>
-      <button
-        type="button"
-        onClick={() => setSelectedTimeRange(TimeOptions.ALL)}
-        disabled={selectedTimeRange === TimeOptions.ALL}
-        className={`${selectedTimeRange === TimeOptions.ALL ? "text-[var(--primary-text-color)]" : "hover:text-teal-500"} relative -ml-px inline-flex items-center rounded-r-md bg-white px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10`}
-      >
-        ALL
-      </button>
+      {Object.values(TimeOptions).map((value, i) => (
+        <TimeButton
+          key={i}
+          selectedTimeRange={selectedTimeRange}
+          setSelectedTimeRange={setSelectedTimeRange}
+          timeOption={value}
+          position={i}
+        />
+      ))}
     </div>
   )
 }

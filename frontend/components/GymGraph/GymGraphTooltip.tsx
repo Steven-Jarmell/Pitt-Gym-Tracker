@@ -8,7 +8,7 @@ const GymGraphTooltip = ({
 }: TooltipProps<number, string>) => {
   if (active && payload && payload.length) {
     return (
-      <div className="custom-tooltip bg-[var(--primary-text-color)] p-2 font-serif rounded-md">
+      <div className="custom-tooltip bg-[var(--primary-text-color)] dark:text-[var(--dark-secondary-bg-color)] p-2 font-serif rounded-md">
         <p className="label">{`${payload?.[0].name} : ${convertUnixToTime(payload![0].value as number)}`}</p>
         <p className="label">{`${payload?.[1].name} : ${payload?.[1].value}`}</p>
       </div>

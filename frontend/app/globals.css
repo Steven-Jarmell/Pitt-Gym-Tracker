@@ -10,4 +10,7 @@
 
 :root {
   --primary-text-color: #62b0e8;
+  --dark-secondary-bg-color: rgb(39 39 42 / 0.9);
+  --dark-outline-color: rgb(255 255 255 / 0.1);
+  --dark-hover-outline-color: rgb(255 255 255 / 0.2);
 }
