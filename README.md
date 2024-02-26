@@ -14,3 +14,12 @@ I want to make this site better, as well as provide historical data and hopefull
 - PlanetScale => Serverless SQL Database
 - Next.js => Frontend
 - TailwindUI => Frontend Components (shoutout Ming)
+
+## Future Features
+- Add Week by Week Lines in Month Graph
+- Add Month by Month Lines in Year and YTD Graphs
+- Add a point's Date to Tooltip
+- Show predictions for different gym times
+- Add extra graphs for Week/Month/Year/YTD/All to show breakdowns for day of week and other useful information
+
+# Thanks for checking out my project!
