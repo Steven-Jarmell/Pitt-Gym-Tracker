@@ -5,7 +5,6 @@ export function filterByDate(
   item: GymInfoType,
   selectedTimeRange: TimeOptions
 ) {
-  // Probs need a switch statement here to use the time range
   let todaysDate = new Date().toISOString().split("T")[0]
   let curItemDate = item.lastUpdated.split("T")[0]
   switch (selectedTimeRange) {
@@ -37,6 +36,7 @@ export type GymGraphInfoType = {
   date: string
 }
 
+// Generate a map with the key being the gym name and value the times/counts for the gym
 export function graphInfoReducer(
   acc: Map<string, { time: number; count: number }[]>,
   curr: GymGraphInfoType
