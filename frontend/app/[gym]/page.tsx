@@ -16,6 +16,7 @@ export default function Gym({ params }: { params: { gym: string } }) {
       setGymNames(filteredNames.map((curName) => curName.name))
     })
   })
+
   return (
     <div className="flex flex-col gap-10 w-full items-center">
       {gymNames.map((name, i) => (

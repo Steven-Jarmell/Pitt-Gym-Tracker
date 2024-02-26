@@ -26,6 +26,7 @@ type GymGraphType = {
   gymName: string
 }
 
+// Function that runs to get the width of the screen
 const useMediaQuery = (width: number) => {
   const [targetReached, setTargetReached] = useState(false)
 
@@ -61,6 +62,7 @@ export enum TimeOptions {
   ALL = "ALL",
 }
 
+// 12 colors, one for each month
 const lineColorOptions = [
   "#62B0E8",
   "#DA127D",
@@ -77,23 +79,29 @@ const lineColorOptions = [
 ]
 
 const GymGraph = ({ gymName }: GymGraphType) => {
+  // Default => One Day
   const [selectedTimeRange, setSelectedTimeRange] = useState(
     TimeOptions.ONE_DAY
   )
 
+  // For dark/light mode, needed for setting the graph background color
   let { resolvedTheme } = useTheme()
 
+  // Needed to change graph interval for better graph readability
   const isScreenSmall = useMediaQuery(640)
 
+  // Only support Day/Week line breakdowns
   const showLines =
     selectedTimeRange === TimeOptions.ONE_DAY ||
     selectedTimeRange === TimeOptions.ONE_WEEK
 
+  // Store info in a map for easy access
   const [gymInfo, setGymInfo] = useState<
     Map<string, { time: number; count: number }[]>
   >(new Map())
 
   useEffect(() => {
+    // Get the gtym data, filter by date, and create map
     getOneGymData(gymName)
       .then((res) =>
         res
