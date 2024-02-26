@@ -36,7 +36,7 @@ export type GymGraphInfoType = {
   date: string
 }
 
-// Generate a map with the key being the gym name and value the times/counts for the gym
+// Generate a map with the key being the date and value the times/counts for the gym
 export function graphInfoReducer(
   acc: Map<string, { time: number; count: number }[]>,
   curr: GymGraphInfoType

@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Pitt Gym Tracker",
   description:
-    "Website to display Pitt Gym data in a graphical format with predictions about how busy it will be in the future",
+    "See Pitt Gym data in a graphical format with predictions about how busy it will be in the future",
 }
 
 export default function RootLayout({
