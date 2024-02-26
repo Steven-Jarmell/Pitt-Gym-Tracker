@@ -27,6 +27,9 @@ export default function RootLayout({
           >
             {children}
           </main>
+          <span className="text-sm font-semibold leading-7 text-gray-400 sm:truncate sm:tracking-tight text-center dark:text-gray-700">
+            Made by Steven Jarmell | 2024
+          </span>
         </Providers>
       </body>
     </html>
