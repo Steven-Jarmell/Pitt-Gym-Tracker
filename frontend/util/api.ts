@@ -32,7 +32,7 @@ export const getOneGymData = async (
 ): Promise<GymInfoType[]> => {
   return await fetch(createURL(`/api/gymdata/${gymName}`), {
     method: "GET",
-    next: { revalidate: 3600 },
+    next: { revalidate: 2700 },
   })
     .then((response) => {
       if (!response.ok) {
