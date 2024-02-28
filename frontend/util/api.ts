@@ -7,7 +7,7 @@ const createURL = (path: string) => {
 export const getAllGymNames = async (): Promise<{ name: string }[]> => {
   return await fetch(createURL("/api/gymdata"), {
     method: "GET",
-    next: { revalidate: 3600 },
+    next: { revalidate: 2700 },
   })
     .then((response) => {
       if (!response.ok) {
