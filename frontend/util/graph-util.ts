@@ -5,8 +5,10 @@ export function filterByDate(
   item: GymInfoType,
   selectedTimeRange: TimeOptions
 ) {
-  let todaysDate = new Date().toISOString().split("T")[0]
+  let dt = new Date()
+  let todaysDate = dt.getFullYear() + "-" + (((dt.getMonth() + 1) > 9 )? dt.getMonth() + 1 : '0' + (dt.getMonth()+1).toString()) + "-" + (dt.getDate() > 9 ? dt.getDate() : '0' + dt.getDate()) 
   let curItemDate = item.lastUpdated.split("T")[0]
+  
   switch (selectedTimeRange) {
     case TimeOptions.ONE_DAY:
       return todaysDate === curItemDate
