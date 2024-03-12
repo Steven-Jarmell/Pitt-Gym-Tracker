@@ -4,7 +4,7 @@ import Link from "next/link"
 
 const WebsiteLogo = () => {
   return (
-    <Link href="/">
+    <Link href="/" data-testid="website-logo">
       <Image
         src={PantherLogo}
         alt="Panther holding a dumbbell"

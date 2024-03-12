@@ -57,6 +57,7 @@ const ToggleThemeButton = () => {
           console.log(`switching to ${otherTheme}`)
           setTheme(otherTheme)
         }}
+        data-testid="toggle-theme-button"
       >
         <SunIcon className="h-6 w-6 fill-zinc-100 stroke-[var(--primary-text-color)] transition group-hover:fill-[var(--primary-text-color)] group-hover:stroke-[var(--primary-text-color)] dark:hidden [@media(prefers-color-scheme:dark)]:fill-[var(--primary-text-color)] [@media(prefers-color-scheme:dark)]:stroke-[var(--primary-text-color)] [@media(prefers-color-scheme:dark)]:group-hover:fill-teal-50 [@media(prefers-color-scheme:dark)]:group-hover:stroke-[var(--primary-text-color)]" />
         <MoonIcon className="hidden h-6 w-6 fill-zinc-700 stroke-[var(--primary-text-color)] transition dark:block [@media(prefers-color-scheme:dark)]:group-hover:[var(--primary-text-color)] [@media_not_(prefers-color-scheme:dark)]:fill-[var(--primary-text-color)] [@media_not_(prefers-color-scheme:dark)]:stroke-[var(--primary-text-color)]" />

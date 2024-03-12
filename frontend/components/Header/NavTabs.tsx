@@ -167,7 +167,7 @@ export default function NavTabs() {
 
   return (
     <>
-      <header className="pointer-events-none relative z-50 flex flex-none flex-col">
+      <header className="pointer-events-none relative z-50 flex flex-none flex-col" data-testid="navigation-tabs"> 
         {isHomePage && (
           <>
             <Container className="top-0 order-last -mb-3 pt-3"></Container>
