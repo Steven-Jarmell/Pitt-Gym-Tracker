@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma"
 
 export async function GET() {
   try {
-    const data = await prisma.gymData.findMany({
+    const data = await prisma.gymdata.findMany({
       distinct: ["name"],
       select: {
         name: true,

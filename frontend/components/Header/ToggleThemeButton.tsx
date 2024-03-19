@@ -53,10 +53,7 @@ const ToggleThemeButton = () => {
       <button
         type="button"
         className="group rounded-full bg-white/90 px-3 py-2 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur transition dark:bg-[var(--dark-secondary-bg-color)] dark:ring-[var(--dark-outline-color)] dark:hover:ring-[var(--dark-hover-outline-color)]"
-        onClick={() => {
-          console.log(`switching to ${otherTheme}`)
-          setTheme(otherTheme)
-        }}
+        onClick={() => setTheme(otherTheme)}
       >
         <SunIcon className="h-6 w-6 fill-zinc-100 stroke-[var(--primary-text-color)] transition group-hover:fill-[var(--primary-text-color)] group-hover:stroke-[var(--primary-text-color)] dark:hidden [@media(prefers-color-scheme:dark)]:fill-[var(--primary-text-color)] [@media(prefers-color-scheme:dark)]:stroke-[var(--primary-text-color)] [@media(prefers-color-scheme:dark)]:group-hover:fill-teal-50 [@media(prefers-color-scheme:dark)]:group-hover:stroke-[var(--primary-text-color)]" />
         <MoonIcon className="hidden h-6 w-6 fill-zinc-700 stroke-[var(--primary-text-color)] transition dark:block [@media(prefers-color-scheme:dark)]:group-hover:[var(--primary-text-color)] [@media_not_(prefers-color-scheme:dark)]:fill-[var(--primary-text-color)] [@media_not_(prefers-color-scheme:dark)]:stroke-[var(--primary-text-color)]" />
