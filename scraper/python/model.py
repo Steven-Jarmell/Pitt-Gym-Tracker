@@ -7,7 +7,7 @@ class Base(DeclarativeBase):
 
 
 class Gym(Base):
-    __tablename__ = "GymData"
+    __tablename__ = "gymdata"
 
     name: Mapped[str] = mapped_column(String(100), primary_key=True)
     count: Mapped[int] = mapped_column(Integer, primary_key=True)
