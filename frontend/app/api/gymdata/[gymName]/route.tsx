@@ -5,16 +5,16 @@ export async function GET(
   { params }: { params: { gymName: string } }
 ) {
   try {
-    const data = await prisma.gymData.findMany({
+    const data = await prisma.gymdata.findMany({
       where: {
         name: params.gymName,
       },
       select: {
         count: true,
-        lastUpdated: true,
+        last_updated: true,
       },
       orderBy: {
-        lastUpdated: "desc",
+        last_updated: "desc",
       },
     })
     return Response.json(data, { status: 200 })
