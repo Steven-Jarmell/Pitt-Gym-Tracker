@@ -25,7 +25,7 @@ def get_db_env_variables() -> tuple[str, str, str, str]:
         if not password:
             print(" - DATABASE_PASSWORD Variable Not Set")
         if not db_port:
-            print(" - DATABASE_PORT Variable Not Set")
+            print(" - DB_PORT Variable Not Set")
 
         exit(1)
 
