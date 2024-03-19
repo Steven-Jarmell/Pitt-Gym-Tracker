@@ -11,7 +11,7 @@ I want to make this site better, as well as provide historical data and hopefull
 - Python + BeautifulSoup => Web Scraping
 - AWS Lambda + AWS Event Bridge => Run the scraper at a certain interval
 - Docker + AWS ECR + GitHub Actions => CI/CD Pipeline to update Lambda automatically
-- PlanetScale => Serverless SQL Database
+- Supabase => Serverless PostgreSQL Database
 - Next.js => Frontend
 - TailwindUI => Frontend Components (shoutout Ming)
 
