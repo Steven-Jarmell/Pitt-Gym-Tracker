@@ -24,7 +24,7 @@ export const getAllGymNames = async (): Promise<{ name: string }[]> => {
 
 export type GymInfoType = {
   count: number
-  lastUpdated: string
+  last_updated: string
 }
 
 export const getOneGymData = async (

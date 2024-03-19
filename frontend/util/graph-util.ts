@@ -6,9 +6,17 @@ export function filterByDate(
   selectedTimeRange: TimeOptions
 ) {
   let dt = new Date()
-  let todaysDate = dt.getFullYear() + "-" + (((dt.getMonth() + 1) > 9 )? dt.getMonth() + 1 : '0' + (dt.getMonth()+1).toString()) + "-" + (dt.getDate() > 9 ? dt.getDate() : '0' + dt.getDate()) 
-  let curItemDate = item.lastUpdated.split("T")[0]
-  
+  let todaysDate =
+    dt.getFullYear() +
+    "-" +
+    (dt.getMonth() + 1 > 9
+      ? dt.getMonth() + 1
+      : "0" + (dt.getMonth() + 1).toString()) +
+    "-" +
+    (dt.getDate() > 9 ? dt.getDate() : "0" + dt.getDate())
+
+  let curItemDate = item.last_updated.split("T")[0]
+
   switch (selectedTimeRange) {
     case TimeOptions.ONE_DAY:
       return todaysDate === curItemDate
