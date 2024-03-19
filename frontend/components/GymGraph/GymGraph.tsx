@@ -104,28 +104,24 @@ const GymGraph = ({ gymName }: GymGraphType) => {
     // Get the gtym data, filter by date, and create map
     getOneGymData(gymName)
       .then((res) => {
-        console.log(res)
         return res
           .filter((item) => filterByDate(item, selectedTimeRange))
           .map((item) => {
-            console.log("AT MAP")
-            console.log(item)
-            let timeInUnix = convertISOToUnix(item.lastUpdated)
+            let timeInUnix = convertISOToUnix(item.last_updated)
             return {
               count: item.count,
               time: timeInUnix,
-              date: item.lastUpdated.split("T")[0],
+              date: item.last_updated.split("T")[0],
             } as GymGraphInfoType
           })
-        
+
           .reduce(
             graphInfoReducer,
             new Map<string, { time: number; count: number }[]>()
           )
-      }
-      )
-          
-      .then((data) => {console.log(data);setGymInfo(data)})
+      })
+
+      .then((data) => setGymInfo(data))
   }, [selectedTimeRange])
 
   // Generate ticks for every hour from 6 AM to 11 PM

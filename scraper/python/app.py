@@ -2,14 +2,17 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from model import Base, Gym
-from util import get_connection_string, get_page_url
+from util import get_connection_string
 from bs4 import BeautifulSoup
+from datetime import datetime
 import requests
 import logging
-from datetime import datetime
 
 logger = logging.getLogger()
 logger.setLevel("INFO")
+
+PAGE_URL = "https://connect2concepts.com/connect2/?type=bar&key=17c2cbcb-ec92-4178-a5f5-c4860330aea0"
+
 
 def handler(event, context):
     logger.info("Starting Lambda")
@@ -30,7 +33,7 @@ def handler(event, context):
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0',
     }
 
-    page = requests.get(get_page_url(), headers=headers)
+    page = requests.get(PAGE_URL, headers=headers)
     soup = BeautifulSoup(page.text, 'html.parser')
     logger.info("Successfully got page HTML")
 
@@ -47,7 +50,8 @@ def handler(event, context):
             gym_entry = Gym(
                 name=info[0],
                 count=info[2][12:],
-                lastUpdated=datetime.strptime(info[3][9:], '%m/%d/%Y %I:%M %p'),
+                lastUpdated=datetime.strptime(
+                    info[3][9:], '%m/%d/%Y %I:%M %p'),
                 status=info[1][1:-1] == 'Open'
             )
 
@@ -67,6 +71,7 @@ def handler(event, context):
                 session.rollback()
 
     logger.info("Finished")
+
 
 def log_add_exception(err, gym_entry):
     logger.exception(err)
