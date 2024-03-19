@@ -77,7 +77,3 @@ def log_add_exception(err, gym_entry):
     logger.exception(err)
     logger.exception(f"Tried to add: {gym_entry}")
     logger.info("Rolling back after exception")
-
-
-if __name__ == "__main__":
-    handler(0, 0)
