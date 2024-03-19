@@ -1,7 +1,11 @@
-FROM public.ecr.aws/lambda/python:3.11
+FROM public.ecr.aws/lambda/python:3.12
+
+RUN dnf distro-sync
+RUN dnf install -y libpq-devel gcc
 
 COPY requirements.txt .
 
+RUN pip install --upgrade pip
 RUN pip install -r requirements.txt --target .
 
 ARG AWS_ACCESS_KEY_ID
