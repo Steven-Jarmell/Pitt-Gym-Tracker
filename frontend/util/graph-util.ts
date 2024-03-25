@@ -58,3 +58,8 @@ export function graphInfoReducer(
   }
   return acc
 }
+
+export function formatDate(dateToFormat: string): string {
+  const splitDateToFormat = dateToFormat.split("-")
+  return `${splitDateToFormat[1]}-${splitDateToFormat[2]}-${splitDateToFormat[0]}`
+}

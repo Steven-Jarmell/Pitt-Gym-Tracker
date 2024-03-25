@@ -17,10 +17,12 @@ import { useCallback, useEffect, useState } from "react"
 import {
   GymGraphInfoType,
   filterByDate,
+  formatDate,
   graphInfoReducer,
 } from "@/util/graph-util"
 import { getOneGymData } from "@/util/api"
 import { useTheme } from "next-themes"
+import { Payload } from "recharts/types/component/DefaultLegendContent"
 
 type GymGraphType = {
   gymName: string
@@ -84,6 +86,10 @@ const GymGraph = ({ gymName }: GymGraphType) => {
     TimeOptions.ONE_DAY
   )
 
+  // For changing the opacity of lines not hovered over
+  const [isSomethingHovered, setIsSomethingHovered] = useState(false)
+  const [curHovered, setCurHovered] = useState("")
+
   // For dark/light mode, needed for setting the graph background color
   let { resolvedTheme } = useTheme()
 
@@ -101,7 +107,7 @@ const GymGraph = ({ gymName }: GymGraphType) => {
   >(new Map())
 
   useEffect(() => {
-    // Get the gtym data, filter by date, and create map
+    // Get the gym data, filter by date, and create map
     getOneGymData(gymName)
       .then((res) => {
         return res
@@ -111,10 +117,9 @@ const GymGraph = ({ gymName }: GymGraphType) => {
             return {
               count: item.count,
               time: timeInUnix,
-              date: item.last_updated.split("T")[0],
+              date: formatDate(item.last_updated.split("T")[0]),
             } as GymGraphInfoType
           })
-
           .reduce(
             graphInfoReducer,
             new Map<string, { time: number; count: number }[]>()
@@ -185,6 +190,14 @@ const GymGraph = ({ gymName }: GymGraphType) => {
               wrapperStyle={{
                 paddingBottom: "12px",
               }}
+              onMouseEnter={(o: Payload) => {
+                setIsSomethingHovered(true)
+                setCurHovered(o.value)
+              }}
+              onMouseLeave={() => {
+                setIsSomethingHovered(false)
+                setCurHovered("")
+              }}
             />
           )}
           <Tooltip content={<GymGraphTooltip />} />
@@ -196,6 +209,22 @@ const GymGraph = ({ gymName }: GymGraphType) => {
                 data={timeCounts}
                 fill={`${showLines ? lineColorOptions[i] : "#62B0E8"}`}
                 line={showLines}
+                onMouseEnter={() => {
+                  if (!showLines) return
+                  setIsSomethingHovered(true)
+                  setCurHovered(date)
+                }}
+                onMouseLeave={() => {
+                  if (!showLines) return
+                  setIsSomethingHovered(false)
+                  setCurHovered("")
+                }}
+                fillOpacity={
+                  isSomethingHovered ? (curHovered === date ? 1 : 0.3) : 1
+                }
+                strokeOpacity={
+                  isSomethingHovered ? (curHovered === date ? 1 : 0.3) : 1
+                }
               />
             )
           })}
