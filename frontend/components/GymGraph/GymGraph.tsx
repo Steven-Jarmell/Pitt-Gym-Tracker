@@ -92,6 +92,15 @@ const GymGraph = ({ gymName }: GymGraphType) => {
   const [isSomethingHovered, setIsSomethingHovered] = useState(false)
   const [curHovered, setCurHovered] = useState("")
 
+  // Store info in a map for easy access
+  const [gymInfo, setGymInfo] = useState<
+    Map<string, { time: number; count: number }[]>
+  >(new Map())
+  const [mostRecentGymInfo, setMostRecentGymInfo] = useState<GymInfoType[]>([])
+
+  // For loading state
+  const [isLoading, setIsLoading] = useState(false)
+
   // For dark/light mode, needed for setting the graph background color
   let { resolvedTheme } = useTheme()
 
@@ -102,15 +111,6 @@ const GymGraph = ({ gymName }: GymGraphType) => {
   const showLines =
     selectedTimeRange === TimeOptions.ONE_DAY ||
     selectedTimeRange === TimeOptions.ONE_WEEK
-
-  // Store info in a map for easy access
-  const [gymInfo, setGymInfo] = useState<
-    Map<string, { time: number; count: number }[]>
-  >(new Map())
-
-  const [mostRecentGymInfo, setMostRecentGymInfo] = useState<GymInfoType[]>([])
-
-  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     // Get the gym data, filter by date, and create map
