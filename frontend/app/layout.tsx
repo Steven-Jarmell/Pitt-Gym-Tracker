@@ -23,7 +23,7 @@ export default function RootLayout({
         <Providers>
           <Header />
           <main
-            className={`${inter.className} flex flex-col items-center gap-2 md:p-12 sm:p-0`}
+            className={`${inter.className} flex flex-col items-center gap-2`}
           >
             {children}
           </main>
