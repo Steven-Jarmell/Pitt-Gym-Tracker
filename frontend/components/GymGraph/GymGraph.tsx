@@ -130,7 +130,7 @@ const GymGraph = ({ gymName }: GymGraphType) => {
       })
       .then((data) => setGymInfo(data))
 
-    getOneGymData(gymName).then((res) => setMostRecentGymInfo(res))
+    getOneGymData(gymName).then((res) => res.filter((item) => filterByDate(item, selectedTimeRange))).then((data) => setMostRecentGymInfo(data))
   }, [selectedTimeRange])
 
   // Generate ticks for every hour from 6 AM to 11 PM
@@ -147,7 +147,7 @@ const GymGraph = ({ gymName }: GymGraphType) => {
       <div className="flex gap-4">
         <h3>
           Current Count:{" "}
-          {`${mostRecentGymInfo[0]?.count} (${Math.floor((mostRecentGymInfo[0]?.count / gymCapacities[gymName]) * 100)}% full)`}
+          {mostRecentGymInfo[0]?.count ? `${mostRecentGymInfo[0]?.count} (${Math.floor((mostRecentGymInfo[0]?.count / gymCapacities[gymName]) * 100)}% full)` : "0 (0% full)"}
         </h3>
       </div>
       <ResponsiveContainer width={"100%"} height={550}>
