@@ -63,3 +63,18 @@ export function formatDate(dateToFormat: string): string {
   const splitDateToFormat = dateToFormat.split("-")
   return `${splitDateToFormat[1]}-${splitDateToFormat[2]}-${splitDateToFormat[0]}`
 }
+
+interface GymCapacityMap {
+  [key: string]: number
+}
+
+export const gymCapacities: GymCapacityMap = {
+  "Baierl Rec Center": 250,
+  "Bellefield Hall: Fitness Center & Weight Room": 35,
+  "Bellefield Hall: Court & Dance Studio": 20,
+  "Trees Hall: Fitness Center": 50,
+  "Trees Hall: Courts": 50,
+  "Trees Hall: Racquetball Courts & Multipurpose Room": 50,
+  "William Pitt Union": 35,
+  "Pitt Sports Dome": 200,
+}

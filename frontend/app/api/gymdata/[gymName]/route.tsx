@@ -12,6 +12,7 @@ export async function GET(
       select: {
         count: true,
         last_updated: true,
+        status: true,
       },
       orderBy: {
         last_updated: "desc",

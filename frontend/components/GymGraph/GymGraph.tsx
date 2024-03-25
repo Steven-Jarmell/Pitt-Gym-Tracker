@@ -19,8 +19,9 @@ import {
   filterByDate,
   formatDate,
   graphInfoReducer,
+  gymCapacities,
 } from "@/util/graph-util"
-import { getOneGymData } from "@/util/api"
+import { GymInfoType, getOneGymData } from "@/util/api"
 import { useTheme } from "next-themes"
 import { Payload } from "recharts/types/component/DefaultLegendContent"
 
@@ -106,6 +107,8 @@ const GymGraph = ({ gymName }: GymGraphType) => {
     Map<string, { time: number; count: number }[]>
   >(new Map())
 
+  const [mostRecentGymInfo, setMostRecentGymInfo] = useState<GymInfoType[]>([])
+
   useEffect(() => {
     // Get the gym data, filter by date, and create map
     getOneGymData(gymName)
@@ -125,8 +128,9 @@ const GymGraph = ({ gymName }: GymGraphType) => {
             new Map<string, { time: number; count: number }[]>()
           )
       })
-
       .then((data) => setGymInfo(data))
+
+    getOneGymData(gymName).then((res) => setMostRecentGymInfo(res))
   }, [selectedTimeRange])
 
   // Generate ticks for every hour from 6 AM to 11 PM
@@ -140,6 +144,12 @@ const GymGraph = ({ gymName }: GymGraphType) => {
       <h2 className="text-lg font-semibold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight text-center dark:text-slate-50 sm:my-auto">
         {gymName}
       </h2>
+      <div className="flex gap-4">
+        <h3>
+          Current Count:{" "}
+          {`${mostRecentGymInfo[0]?.count} (${Math.floor((mostRecentGymInfo[0]?.count / gymCapacities[gymName]) * 100)}% full)`}
+        </h3>
+      </div>
       <ResponsiveContainer width={"100%"} height={550}>
         <ScatterChart
           margin={{
