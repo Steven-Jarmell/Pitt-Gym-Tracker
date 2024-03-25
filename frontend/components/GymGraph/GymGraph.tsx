@@ -17,10 +17,12 @@ import { useCallback, useEffect, useState } from "react"
 import {
   GymGraphInfoType,
   filterByDate,
+  formatDate,
   graphInfoReducer,
 } from "@/util/graph-util"
 import { getOneGymData } from "@/util/api"
 import { useTheme } from "next-themes"
+import { Payload } from "recharts/types/component/DefaultLegendContent"
 
 type GymGraphType = {
   gymName: string
@@ -84,6 +86,10 @@ const GymGraph = ({ gymName }: GymGraphType) => {
     TimeOptions.ONE_DAY
   )
 
+  // For changing the opacity of lines not hovered over
+  const [isSomethingHovered, setIsSomethingHovered] = useState(false)
+  const [curHovered, setCurHovered] = useState("")
+
   // For dark/light mode, needed for setting the graph background color
   let { resolvedTheme } = useTheme()
 
@@ -99,11 +105,6 @@ const GymGraph = ({ gymName }: GymGraphType) => {
   const [gymInfo, setGymInfo] = useState<
     Map<string, { time: number; count: number }[]>
   >(new Map())
-
-  const formatDate = (dateToFormat: string): string => {
-    const splitDateToFormat = dateToFormat.split('-')
-    return `${splitDateToFormat[1]}-${splitDateToFormat[2]}-${splitDateToFormat[0]}`;
-  }
 
   useEffect(() => {
     // Get the gym data, filter by date, and create map
@@ -189,6 +190,14 @@ const GymGraph = ({ gymName }: GymGraphType) => {
               wrapperStyle={{
                 paddingBottom: "12px",
               }}
+              onMouseEnter={(o: Payload) => {
+                setIsSomethingHovered(true)
+                setCurHovered(o.value)
+              }}
+              onMouseLeave={() => {
+                setIsSomethingHovered(false)
+                setCurHovered("")
+              }}
             />
           )}
           <Tooltip content={<GymGraphTooltip />} />
@@ -200,6 +209,22 @@ const GymGraph = ({ gymName }: GymGraphType) => {
                 data={timeCounts}
                 fill={`${showLines ? lineColorOptions[i] : "#62B0E8"}`}
                 line={showLines}
+                onMouseEnter={() => {
+                  if (!showLines) return
+                  setIsSomethingHovered(true)
+                  setCurHovered(date)
+                }}
+                onMouseLeave={() => {
+                  if (!showLines) return
+                  setIsSomethingHovered(false)
+                  setCurHovered("")
+                }}
+                fillOpacity={
+                  isSomethingHovered ? (curHovered === date ? 1 : 0.3) : 1
+                }
+                strokeOpacity={
+                  isSomethingHovered ? (curHovered === date ? 1 : 0.3) : 1
+                }
               />
             )
           })}
