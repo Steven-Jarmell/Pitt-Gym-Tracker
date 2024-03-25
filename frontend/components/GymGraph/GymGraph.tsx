@@ -106,7 +106,7 @@ const GymGraph = ({ gymName }: GymGraphType) => {
   }
 
   useEffect(() => {
-    // Get the gtym data, filter by date, and create map
+    // Get the gym data, filter by date, and create map
     getOneGymData(gymName)
       .then((res) => {
         return res
