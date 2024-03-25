@@ -100,6 +100,11 @@ const GymGraph = ({ gymName }: GymGraphType) => {
     Map<string, { time: number; count: number }[]>
   >(new Map())
 
+  const formatDate = (dateToFormat: string): string => {
+    const splitDateToFormat = dateToFormat.split('-')
+    return `${splitDateToFormat[1]}-${splitDateToFormat[2]}-${splitDateToFormat[0]}`;
+  }
+
   useEffect(() => {
     // Get the gtym data, filter by date, and create map
     getOneGymData(gymName)
@@ -111,10 +116,9 @@ const GymGraph = ({ gymName }: GymGraphType) => {
             return {
               count: item.count,
               time: timeInUnix,
-              date: item.last_updated.split("T")[0],
+              date: formatDate(item.last_updated.split("T")[0]),
             } as GymGraphInfoType
           })
-
           .reduce(
             graphInfoReducer,
             new Map<string, { time: number; count: number }[]>()
