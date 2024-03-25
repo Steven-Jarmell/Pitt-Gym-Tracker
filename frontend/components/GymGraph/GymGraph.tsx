@@ -24,6 +24,7 @@ import {
 import { GymInfoType, getOneGymData } from "@/util/api"
 import { useTheme } from "next-themes"
 import { Payload } from "recharts/types/component/DefaultLegendContent"
+import { BallTriangle } from "react-loader-spinner"
 
 type GymGraphType = {
   gymName: string
@@ -109,8 +110,12 @@ const GymGraph = ({ gymName }: GymGraphType) => {
 
   const [mostRecentGymInfo, setMostRecentGymInfo] = useState<GymInfoType[]>([])
 
+  const [isLoading, setIsLoading] = useState(false)
+
   useEffect(() => {
     // Get the gym data, filter by date, and create map
+    setIsLoading(true)
+
     getOneGymData(gymName)
       .then((res) => {
         return res
@@ -130,7 +135,12 @@ const GymGraph = ({ gymName }: GymGraphType) => {
       })
       .then((data) => setGymInfo(data))
 
-    getOneGymData(gymName).then((res) => res.filter((item) => filterByDate(item, selectedTimeRange))).then((data) => setMostRecentGymInfo(data))
+    getOneGymData(gymName)
+      .then((res) =>
+        res.filter((item) => filterByDate(item, selectedTimeRange))
+      )
+      .then((data) => setMostRecentGymInfo(data))
+      .finally(() => setIsLoading(false))
   }, [selectedTimeRange])
 
   // Generate ticks for every hour from 6 AM to 11 PM
@@ -144,102 +154,121 @@ const GymGraph = ({ gymName }: GymGraphType) => {
       <h2 className="text-lg font-semibold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight text-center dark:text-slate-50 sm:my-auto">
         {gymName}
       </h2>
-      <div className="flex gap-4">
-        <h3>
-          Current Count:{" "}
-          {mostRecentGymInfo[0]?.count ? `${mostRecentGymInfo[0]?.count} (${Math.floor((mostRecentGymInfo[0]?.count / gymCapacities[gymName]) * 100)}% full)` : "0 (0% full)"}
-        </h3>
-      </div>
-      <ResponsiveContainer width={"100%"} height={550}>
-        <ScatterChart
-          margin={{
-            top: 10,
-            right: 30,
-            bottom: 40,
-            left: 15,
-          }}
-        >
-          <CartesianGrid
-            fill={
-              resolvedTheme === "dark" ? "var(--dark-secondary-bg-color)" : ""
-            }
-          />
-          <XAxis
-            type="number"
-            dataKey="time"
-            name="Time"
-            tickCount={20}
-            interval={isScreenSmall ? 2 : 1}
-            domain={["auto", "auto"]}
-            ticks={ticks}
-            tickFormatter={(value) => {
-              return convertUnixToTime(value)
-            }}
-            angle={-35}
-            tick={{ dy: 10 }}
-            label={{
-              value: "Time",
-              position: "insideBottom",
-              offset: -30,
-            }}
-          />
-          <YAxis
-            type="number"
-            dataKey="count"
-            name="Count"
-            label={{
-              value: "Count",
-              angle: -90,
-              position: "insideLeft",
-            }}
-          />
-          <ZAxis range={[30, 31]} />
-          {showLines && (
-            <Legend
-              verticalAlign="top"
-              wrapperStyle={{
-                paddingBottom: "12px",
+      {isLoading ? (
+        <BallTriangle
+          height={250}
+          width={250}
+          radius={5}
+          color="#62b0e8"
+          ariaLabel="ball-triangle-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+        />
+      ) : (
+        <>
+          <div className="flex gap-4">
+            <h3>
+              Current Count:{" "}
+              {mostRecentGymInfo[0]?.count
+                ? `${mostRecentGymInfo[0]?.count} (${Math.floor((mostRecentGymInfo[0]?.count / gymCapacities[gymName]) * 100)}% full)`
+                : "0 (0% full)"}
+            </h3>
+          </div>
+          <ResponsiveContainer width={"100%"} height={550}>
+            <ScatterChart
+              margin={{
+                top: 10,
+                right: 30,
+                bottom: 40,
+                left: 15,
               }}
-              onMouseEnter={(o: Payload) => {
-                setIsSomethingHovered(true)
-                setCurHovered(o.value)
-              }}
-              onMouseLeave={() => {
-                setIsSomethingHovered(false)
-                setCurHovered("")
-              }}
-            />
-          )}
-          <Tooltip content={<GymGraphTooltip />} />
-          {Array.from(gymInfo).map(([date, timeCounts], i) => {
-            return (
-              <Scatter
-                key={i}
-                name={date}
-                data={timeCounts}
-                fill={`${showLines ? lineColorOptions[i] : "#62B0E8"}`}
-                line={showLines}
-                onMouseEnter={() => {
-                  if (!showLines) return
-                  setIsSomethingHovered(true)
-                  setCurHovered(date)
-                }}
-                onMouseLeave={() => {
-                  if (!showLines) return
-                  setIsSomethingHovered(false)
-                  setCurHovered("")
-                }}
-                fillOpacity={
-                  isSomethingHovered ? (curHovered === date ? 1 : 0.3) : 1
-                }
-                strokeOpacity={
-                  isSomethingHovered ? (curHovered === date ? 1 : 0.3) : 1
+            >
+              <CartesianGrid
+                fill={
+                  resolvedTheme === "dark"
+                    ? "var(--dark-secondary-bg-color)"
+                    : ""
                 }
               />
-            )
-          })}
-        </ScatterChart>
-      </ResponsiveContainer>
+              <XAxis
+                type="number"
+                dataKey="time"
+                name="Time"
+                tickCount={20}
+                interval={isScreenSmall ? 2 : 1}
+                domain={["auto", "auto"]}
+                ticks={ticks}
+                tickFormatter={(value) => {
+                  return convertUnixToTime(value)
+                }}
+                angle={-35}
+                tick={{ dy: 10 }}
+                label={{
+                  value: "Time",
+                  position: "insideBottom",
+                  offset: -30,
+                }}
+              />
+              <YAxis
+                type="number"
+                dataKey="count"
+                name="Count"
+                label={{
+                  value: "Count",
+                  angle: -90,
+                  position: "insideLeft",
+                }}
+              />
+              <ZAxis range={[30, 31]} />
+              {showLines && (
+                <Legend
+                  verticalAlign="top"
+                  wrapperStyle={{
+                    paddingBottom: "12px",
+                  }}
+                  onMouseEnter={(o: Payload) => {
+                    setIsSomethingHovered(true)
+                    setCurHovered(o.value)
+                  }}
+                  onMouseLeave={() => {
+                    setIsSomethingHovered(false)
+                    setCurHovered("")
+                  }}
+                />
+              )}
+              <Tooltip content={<GymGraphTooltip />} />
+              {Array.from(gymInfo).map(([date, timeCounts], i) => {
+                return (
+                  <Scatter
+                    key={i}
+                    name={date}
+                    data={timeCounts}
+                    fill={`${showLines ? lineColorOptions[i] : "#62B0E8"}`}
+                    line={showLines}
+                    onMouseEnter={() => {
+                      if (!showLines) return
+                      setIsSomethingHovered(true)
+                      setCurHovered(date)
+                    }}
+                    onMouseLeave={() => {
+                      if (!showLines) return
+                      setIsSomethingHovered(false)
+                      setCurHovered("")
+                    }}
+                    fillOpacity={
+                      isSomethingHovered ? (curHovered === date ? 1 : 0.3) : 1
+                    }
+                    strokeOpacity={
+                      isSomethingHovered ? (curHovered === date ? 1 : 0.3) : 1
+                    }
+                  />
+                )
+              })}
+            </ScatterChart>
+          </ResponsiveContainer>
+        </>
+      )}
       <TimeButtonGroup
         selectedTimeRange={selectedTimeRange}
         setSelectedTimeRange={setSelectedTimeRange}
