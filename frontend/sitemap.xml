@@ -1,0 +1,25 @@
+<!-- public/sitemap.xml -->
+   <xml version="1.0" encoding="UTF-8">
+   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+     <url>
+       <loc>https://pitt-gym-tracker.vercel.app/</loc>
+       <lastmod>2024-03-25</lastmod>
+     </url>
+     <url>
+       <loc>https://pitt-gym-tracker.vercel.app/Trees_Hall</loc>
+       <lastmod>2024-03-25</lastmod>
+     </url>
+     <url>
+       <loc>https://pitt-gym-tracker.vercel.app/Bellefield_Hall</loc>
+       <lastmod>2024-03-25</lastmod>
+     </url>
+     <url>
+       <loc>https://pitt-gym-tracker.vercel.app/Pitt_Sports_Dome</loc>
+       <lastmod>2024-03-25</lastmod>
+     </url>
+     <url>
+       <loc>https://pitt-gym-tracker.vercel.app/William_Pitt_Union</loc>
+       <lastmod>2024-03-25</lastmod>
+     </url>
+   </urlset>
+   </xml>
