@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full antialiased" suppressHydrationWarning>
-      <body className="flex flex-col bg-[#F0F4F8] dark:bg-[#040D12]">
+      <body className="flex flex-col bg-[#F0F4F8] dark:bg-[#040D12] h-full">
         <Providers>
           <Header />
           <main
@@ -29,7 +29,7 @@ export default function RootLayout({
           >
             {children}
           </main>
-          <span className="text-sm font-semibold leading-7 text-gray-400 text-center dark:text-gray-700">
+          <span className="text-sm font-semibold leading-7 text-gray-400 text-center dark:text-gray-70 mt-auto">
             Made by Steven Jarmell | 2024
           </span>
         </Providers>

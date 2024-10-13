@@ -3,7 +3,7 @@ import RocPic from "@/images/roc.png"
 
 export default function Custom404() {
   return (
-    <div className="flex flex-col justify-center items-center bg-[#040D12] h-[100vh] w-[100vw]">
+    <div className="flex flex-col justify-center items-center bg-[#040D12] mt-4 w-[100vw]">
       <div className="mx-auto max-w-7xl px-6 text-center lg:px-8">
         <p className="text-base font-semibold leading-8 text-white">404</p>
         <h1 className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-5xl">
